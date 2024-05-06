@@ -133,4 +133,34 @@ class eventC
             die('Error counting reservations for events: ' . $e->getMessage());
         }
     }
+    public function getEventById($event_id)
+    {
+        $sql = "SELECT * FROM event WHERE event_id = :event_id";
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare($sql);
+            $query->execute(['event_id' => $event_id]);
+            $event_data = $query->fetch(PDO::FETCH_ASSOC);
+            
+            // Vérifier si des données ont été récupérées
+            if ($event_data) {
+                // Créer une instance de la classe event avec les données récupérées
+                $event = new event(
+                    $event_data['event_id'],
+                    $event_data['event_name'],
+                    $event_data['event_description'],
+                    $event_data['event_date'],
+                    $event_data['event_location'],
+                    $event_data['event_organizer']
+                );
+                return $event;
+            } else {
+                return null; // Aucun événement trouvé avec cet ID
+            }
+        } catch (Exception $e) {
+            die('Error fetching event details: ' . $e->getMessage());
+        }
+    }
+    
+
 }

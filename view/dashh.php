@@ -47,16 +47,11 @@ if (
         header('Location:indexx.php');
     } 
 }
+// Tri des réservations par nombre de personnes
+$reservations = $reservationC->sortReservationsByNumOfPeople();
 ?>
 <!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js" lang>
-<!--<![endif]-->
-
-<!-- Mirrored from colorlib.com/polygon/elaadmin/ by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 15 Apr 2024 01:48:05 GMT -->
+<html class="no-js" lang="">
 
 <head>
     <meta charset="utf-8">
@@ -64,8 +59,6 @@ if (
     <title>Ela Admin - HTML5 Admin Template</title>
     <meta name="description" content="Ela Admin - HTML5 Admin Template">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="apple-touch-icon" href="images/favicon.png">
-    <link rel="shortcut icon" href="images/favicon.png">
     <link rel="stylesheet" href="assets/css/normalize.css">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/font-awesome.min.css">
@@ -119,10 +112,12 @@ if (
     }
     </style>
     <meta name="robots" content="noindex, nofollow">
+    
    
 </head>
 
 <body>
+    
 
     <aside id="left-panel" class="left-panel">
         <nav class="navbar navbar-expand-sm navbar-default">
@@ -263,7 +258,7 @@ if (
                         <script src="js.js"></script>
                         <div class="card-header"><strong>Réservations</strong><small> informations</small></div>
                         <div class="card-body card-block">
-                       
+                            <button id="sort-num-people" class="btn btn-primary">Trier par Nombre de Personnes</button>
                             <form action="" id="form" method="POST" class="">
                                 <div class="form-group"><label for="participant_name"
                                         class=" form-control-label">participant_name</label><input type="text" id="participant_name" name = "participant_name"
@@ -339,6 +334,20 @@ if (
                                             <td>
                                                 <?= $reservation['num_of_people']; ?>
                                             </td>
+                                            <?php
+// Générer le HTML pour afficher les réservations triées
+foreach ($reservations as $reservation) {
+    echo "<div class='reservation'>";
+    echo "<p>ID de la réservation : " . $reservation['reservation_id'] . "</p>";
+    echo "<p>Nom du participant : " . $reservation['participant_name'] . "</p>";
+    echo "<p>Email du participant : " . $reservation['participant_email'] . "</p>";
+    echo "<p>Téléphone du participant : " . $reservation['participant_phone'] . "</p>";
+    echo "<p>Nombre de personnes : " . $reservation['num_of_people'] . "</p>";
+    // Tu peux ajouter d'autres détails de réservation si nécessaire
+    echo "</div>";
+}
+?>
+
 
                                             <td align="center">
                                                 <form method="POST" action="updatereservation.php">
@@ -418,8 +427,22 @@ if (
     <script src="assets/js/lib/vector-map/jquery.vmap.min.js"></script>
     <script src="assets/js/lib/vector-map/jquery.vmap.sampledata.js"></script>
     <script src="assets/js/lib/vector-map/country/jquery.vmap.world.js"></script>
-</body>
 
-<!-- Mirrored from colorlib.com/polygon/elaadmin/ by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 15 Apr 2024 01:49:23 GMT -->
+    <script>
+    $(document).ready(function(){
+        $("#sort-num-people").click(function(){
+            $.ajax({
+                url: "sort_reservations.php",
+                method: "GET",
+                data: { sort_by: "num_of_people" },
+                success: function(data) {
+                    // Mettre à jour le contenu de la table des réservations avec les données triées
+                    $("#reservation-table tbody").html(data); // suppose que votre table a un id "reservation-table" et un tbody où les données sont affichées
+                }
+            });
+        });
+    });
+    </script>
+</body>
 
 </html>

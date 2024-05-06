@@ -114,6 +114,18 @@ class ReservationC {
             die('Error counting reservations for events: ' . $e->getMessage());
         }
     }
+    public function sortReservationsByNumOfPeople() {
+        $sql = "SELECT * FROM reservation ORDER BY num_of_people ASC";
+        $db = config::getConnexion();
+        try {
+            $liste = $db->query($sql);
+            return $liste;
+        } catch (Exception $e) {
+            die('Error sorting reservations by number of people: ' . $e->getMessage());
+        }
+    }
+
+
     
 
     

@@ -365,10 +365,13 @@ if (
                     <div class="col-xl-8">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="box-title">data events </h4>
+                                <h4 class="box-title">data events </h4> <input type="text" id="searsh" name="searsh">
                             </div>
+                            
+                            
+
                             <div class="card-body--">
-                                <div class="table-stats order-table ov-h">
+                                <div id="resultTable"class="table-stats order-table ov-h">
                                     <table class="table ">
                                         <thead>
                                             <tr>
@@ -407,6 +410,7 @@ if (
                                             <td>
                                                 <?= $event['event_organizer']; ?>
                                             </td>
+                                            
 
                                             <td align="center">
                                                 <form method="POST" action="updateevent.php">
@@ -426,11 +430,38 @@ if (
                                                 </form>
                                             </td>
 
+                                           
+                                            <td>
+                                                <button class="btn btn-primary" onclick="window.location.href='pdf.php?event_id=<?php echo $event['event_id']; ?>'">upload</button>
+                                            </td>
+
                                             <?php
                                           }
                                         ?>
 
                                     </table>
+                                    <script>
+                                    document.getElementById("searsh").addEventListener("input", function() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searsh");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("resultTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Parcourt toutes les lignes et masque celles qui ne correspondent pas à la recherche
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1]; // Colonne ID
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    });
+</script>
                                     
                                     <?php
                               
