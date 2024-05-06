@@ -1,7 +1,14 @@
 <?php
     require_once 'C:/xampp/htdocs/dist/Controller/jobOfferC.php';
     require_once 'C:/xampp/htdocs/dist/Model/Job.php';
-
+    require_once 'C:/xampp/htdocs/dist/Controller/categoryc.php';
+    require_once 'C:/xampp/htdocs/dist/Model/category.php';
+   
+    $categoyc = new categoryc();
+    // Call the function to fetch all categories
+    $categorys = $categoyc->getAllcategorys();
+    
+   
     $error = "";
     // create job offer
     $jobOffer = null;
@@ -47,12 +54,12 @@
                 $_POST['lieu_travail']
             );
             $jobOfferC->addJobOffer($jobOffer);
-            header('Location:../View/tableJobu.php');
+            header('Location:../font et back website creativity crew/job-list.php');
         }
         else
             $error = "Missing information";
     }  
-?>
+?> 
 
 
 <!DOCTYPE html>
@@ -61,7 +68,7 @@
   <meta charset="UTF-8">
   <title>Job Offer Form</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="background-image">
@@ -116,41 +123,48 @@
                 
                 <div class="form-row">
                 <label for="categorySelect">Category:</label>
-    <select id="categorySelect" name="id_category">
-        <?php
-        // Call the getCategoryNames function to fetch category names
-        $categoryNames = getCategoryNames(); // Assuming $conn is your database connection
+                 <select id="categorySelect" name="id_category">
+              
+                 <?php
+    // Call the getCategoryNames function to fetch category names
+   
 
-        // Check if there are category names available
-        if (!empty($categoryNames)) {
-            // Loop through the category names and generate <option> elements
-            foreach ($categoryNames as $categoryName) {
-                echo '<option value="' . $categoryName . '">' . $categoryName . '</option>';
-            }
-        } else {
-            echo '<option value="">No categories available</option>';
+    // Check if there are category names available
+    if (!empty($categorys)) {
+        // Loop through the category names and generate <option> elements
+        foreach ($categorys as $category) { // Corrected variable name
+            echo '<option value="' . $category['category_name'] . '">' . $category['category_name'] . '</option>'; // Concatenated correctly
         }
-        ?>
-    </select>
+    } else {
+        echo '<option value="">No categories available</option>';
+    }
+?>
+                </select>
+                
+                
                     <label for="categorySelect">entreprise:</label>
                     <select id="categorySelect" name="id_entreprise">
                         <option value="option1">financial </option>
                         <option value="option2">technology</option>
                         <option value="option3">teaching</option>
                     </select>
+                
+                 
                     <label for="categorySelect">recruteur:</label>
                     <select id="categorySelect" name="id_recruteur">
                         <option value="option1">financial </option>
                         <option value="option2">technology</option>
                         <option value="option3">teaching</option>
                     </select>
-                </div>
+                    </div>
+                 
                 <div class="form-row submit-btn">
                     <div class="input-data">
                         <div class="inner"></div>
                         <input type="submit" value="submit">
                     </div>
                 </div>
+                
             </form>
         </div>
     </div>

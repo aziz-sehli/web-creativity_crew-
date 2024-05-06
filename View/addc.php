@@ -16,7 +16,7 @@
     {
         if (
             !empty($_POST["category_id"]) && 
-            !empty($_POST["category_name"]) &&
+            !empty($_POST["category_name"]) && 
             !empty($_POST["category_des"]) 
             
         ) {

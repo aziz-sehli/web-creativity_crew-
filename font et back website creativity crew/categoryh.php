@@ -82,7 +82,7 @@ $categories = $categoyc->getAllcategorys();
                     </div>
                     <a href="contact.html" class="nav-item nav-link">Contact</a>
                 </div>
-                <a href="" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Post A Job<i class="fa fa-arrow-right ms-3"></i></a>
+                <a href="/dist/View/add.php" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Post A Job<i class="fa fa-arrow-right ms-3"></i></a>
             </div>
         </nav>
         <!-- Navbar End -->
@@ -114,7 +114,7 @@ $categories = $categoyc->getAllcategorys();
             foreach ($categories as $category) {
                 ?>
                 <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <a class="cat-item rounded p-4" href="">
+                    <a class="cat-item rounded p-4" href="job-list.php?category=<?php echo $category['category_name']; ?>">
                         <?php
                         // Assuming each category has an 'icon' field containing the icon class
                         ?>

@@ -1,123 +1,121 @@
 <?php
-   require_once 'C:/xampp/htdocs/dist/Controller/jobOfferC.php';
-   
-    $jobOfferC = new jobOfferC();
+require_once 'C:/xampp/htdocs/dist/Controller/jobOfferC.php';
+
+$jobOfferC = new jobOfferC();
+$categoryChart = $jobOfferC->generateCategoryStatistic(); // Call the method using the object
+
+$jobOffersList = $jobOfferC->getAllJobOffers();
+
+if (isset($_POST['submit'])) {
     $jobOffersList = $jobOfferC->getAllJobOffers();
-
-    if (isset($_POST['submit'])) {
-        $jobOffersList = $jobOfferC->getAllJobOffers();
-    }
-
-    
+}
 ?>
+
+
+
 <!doctype html>
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liste des offres d'emploi</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <style>
-        :root {
-    --primary: #EB1616;     /* Primary color */
-    --secondary: #191C24;   /* Secondary color */
-    --light: #6C7293;       /* Light color */
-    --dark: #000000;        /* Dark color */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .chart-container {
+    max-width: 800px; /* Adjust the maximum width as needed */
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin-bottom: 20px; /* Add margin-bottom to create space between the chart and the job list */
 }
 
-/* Body */
-body {
-    background-color: var(--secondary); /* Background color */
-    color: var(--light);                 /* Text color */
+.chart-container h3 {
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 10px; /* Add margin-bottom to create space between the chart title and the chart */
 }
 
-/* Buttons */
-button {
-    background-color: var(--primary); /* Button background color */
-    color: var(--secondary);           /* Button text color */
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-}
+        .job-list-container h3 {
+            color: #333;
+        }
 
-button:hover {
-    background-color: var(--dark);    /* Button hover background color */
-}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
 
-/* Table */
-.container-fluid.pt-4.px-4 {
-    background-color: var(--secondary); /* Background color */
-    color: var(--light);                 /* Text color */
-}
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
 
-.table th,
-.table td {
-    color: var(--light); /* Text color */
-}
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+            font-weight: bold;
+        }
 
-/* Table Header */
-.table thead th {
-    color: var(--primary); /* Header text color */
-}
+        tbody tr:hover {
+            background-color: #f5f5f5;
+        }
 
-/* Table Body */
-.table tbody th,
-.table tbody td {
-    color: var(--light); /* Body text color */
-}
+        form {
+            display: inline-block;
+        }
 
-/* Navbar */
-.content .navbar .navbar-nav .nav-link {
-    margin-left: 25px;
-    padding: 12px 0;
-    color: var(--light);
-    outline: none;
-}
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
 
-.content .navbar .navbar-nav .nav-link:hover,
-.content .navbar .navbar-nav .nav-link.active {
-    color: var(--primary);
-}
-
-/* Sidebar */
-.sidebar {
-    background: var(--secondary);
-}
-
-.sidebar .navbar .navbar-nav .nav-link {
-    color: var(--light);
-    border-left: 3px solid var(--secondary);
-}
-
-.sidebar .navbar .navbar-nav .nav-link:hover,
-.sidebar .navbar .navbar-nav .nav-link.active {
-    color: var(--primary);
-    background: var(--dark);
-    border-color: var(--primary);
-}
-
-/* Dropdown */
-.sidebar .navbar .dropdown-item {
-    color: var(--light);
-}
-
-.sidebar .navbar .dropdown-item:hover,
-.sidebar .navbar .dropdown-item.active {
-    background: var(--dark);
-}
+        button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 
 <body>
-    
-    <section class="background-image">
+    <section class="chart-container">
+        <!-- Container for the chart -->
         <div class="container">
             <h3 class="text">Affichage des offres d'emploi</h3>
-            <br>
-            <br>
-            
+            <!-- Echo the variable containing the chart -->
+            <?php echo $categoryChart; ?>
+        </div>
+    </section>
+
+    <section class="job-list-container">
+        <!-- Container for the job list -->
+        <div class="container">
+            <h3>Liste des offres d'emploi</h3>
             <table>
+                <!-- Table content here -->
                 <thead>
                     <th>ID</th>
                     <th>Titre</th>
@@ -144,26 +142,27 @@ button:hover {
                             <td><?php echo $jobOffer['id_category']; ?></td>
                             <td><?php echo $jobOffer['date']; ?></td>
                             <td>
-                            <td>
                                 <form method="POST" action="modify.php" onsubmit="return confirm('Are you sure you want to modify this job offer?')">
-                                    <input type= "hidden" name="id_job_offers" value="<?php echo $jobOffer['id_job-offers']; ?>">
-                                     <button type="submit">update</button>
+                                    <input type="hidden" name="id_job_offers" value="<?php echo $jobOffer['id_job_offers']; ?>">
+                                    <button type="submit">update</button>
                                 </form>
                             </td>
                             <td>
-    <form method="POST" action="delete.php" onsubmit="return confirm('Are you sure you want to delete this job offer?')">
-        <input type="hidden" name="id_job_offers" value="<?php echo $jobOffer['id_job_offers']; ?>">
-        <button type="submit">delete</button>
-    </form>
-</td>
+                                <form method="POST" action="delete.php" onsubmit="return confirm('Are you sure you want to delete this job offer?')">
+                                    <input type="hidden" name="id_job_offers" value="<?php echo $jobOffer['id_job_offers']; ?>">
+                                    <button type="submit">delete</button>
+                                </form>
                             </td>
                         </tr>
                     <?php } ?>
                 </tbody>
             </table>
-
         </div>
     </section>
+   
+
+
+
     <script>
         function deleteJobOffer(id) {
             if (confirm('Are you sure you want to delete this job offer?')) {

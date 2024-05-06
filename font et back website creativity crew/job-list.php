@@ -6,10 +6,45 @@ require_once 'C:/xampp/htdocs/dist/Controller/jobOfferC.php';
     $jobOfferC = new jobOfferC();
     $jobOffersList = $jobOfferC->getAllJobOffers();
 
-    if (isset($_POST['submit'])) {
+    if(isset($_GET['category'])) {
+        $selectedCategory = $_GET['category'];
+        // Modify your query to fetch job offers belonging to the selected category
+        $jobOffersList = $jobOfferC->getJobOfferbycategory($selectedCategory);
+    } else {
+        // If no category is selected, fetch all job offers
         $jobOffersList = $jobOfferC->getAllJobOffers();
     }
+// Fonction pour récupérer les suggestions depuis la base de données
+function getSuggestionsFromDatabase() {
+    // Utilisez la classe config pour obtenir une connexion à la base de données
+    $conn = new config();
+    $pdo = $conn->getConnexion();
+    
+    // Préparez et exécutez la requête SQL pour récupérer les suggestions
+    $statement = $pdo->prepare('SELECT DISTINCT id_job_offers, date, titre, lieu_travail FROM job_offers');
+    $statement->execute();
+    
+    // Récupérez les résultats de la requête
+    $suggestions = $statement->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Retournez les suggestions
+    return $suggestions;
+}
 
+// Check if the search form has been submitted
+if(isset($_POST['search'])){
+    // Get the search query from the form
+    $searchQuery = $_POST['searchQuery'];
+    
+    // Create an instance of the controller
+    $controller = new jobOfferC();
+    
+    // Call the search function and get the results
+    $results = $controller->rechercherjoboffer($searchQuery);
+}
+
+// Get suggestions from the database
+$suggestions = getSuggestionsFromDatabase();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -105,34 +140,50 @@ require_once 'C:/xampp/htdocs/dist/Controller/jobOfferC.php';
     <div class="container">
         <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Job Listing</h1>
         <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
-            
+        
+        <div class="search-container">
+            <form action="" method="POST">
+                <input type="text" id="searchQuery" name="searchQuery" class="search-bar" placeholder="Search..." list="suggestions">
+                <div id="searchResults"></div>
+                <!-- Afficher les suggestions -->
+                <datalist id="suggestions">
+                    <?php foreach ($suggestions as $suggestion): ?>
+                        <option value="<?php echo $suggestion['id_job_offers']; ?>">
+                        <option value="<?php echo $suggestion['date']; ?>">
+                        <option value="<?php echo $suggestion['titre']; ?>">
+                        <option value="<?php echo $suggestion['lieu_travail']; ?>">
+                    <?php endforeach; ?>
+                </datalist>
+                <!-- Fin de l'affichage des suggestions -->
+                <button type="submit" name="search" class="search-button">Search</button>
+            </form>
+        </div>
             <div class="tab-content">
                 <div id="tab-1" class="tab-pane fade show p-0 active">
-                    <?php foreach ($jobOffersList as $jobOffer): ?>
-                        <!-- Job Item -->
-                        <div class="job-item p-4 mb-4">
-                            <div class="row g-4">
-                                <!-- Job Details -->
-                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                    
-                                    <div class="text-start ps-4">
-                                        <h5 class="mb-3"><?php echo $jobOffer['titre']; ?></h5>
-                                        <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i><?php echo $jobOffer['lieu_travail']; ?></span>
-                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i><?php echo $jobOffer['id_category']; ?></span>
-                                        <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i><?php echo $jobOffer['competence_requis']; ?></span>
-                                    </div>
-                                </div>
-                                <!-- Action Buttons -->
-                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                    <div class="d-flex mb-3">
-                                        <a class="btn btn-light btn-square me-3" href=""><i class="far fa-heart text-primary"></i></a>
-                                        <a class="btn btn-primary" href="">Apply Now</a>
-                                    </div>
-                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date Line: <?php echo $jobOffer['date']; ?></small>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
+                <?php foreach (!empty($results) ? $results : $jobOffersList as $jobOffer): ?>
+    <!-- Job Item -->
+    <div class="job-item p-4 mb-4">
+        <div class="row g-4">
+            <!-- Job Details -->
+            <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                <div class="text-start ps-4">
+                    <h5 class="mb-3"><?php echo $jobOffer['titre']; ?></h5>
+                    <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i><?php echo $jobOffer['lieu_travail']; ?></span>
+                    <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i><?php echo $jobOffer['id_category']; ?></span>
+                    <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i><?php echo $jobOffer['competence_requis']; ?></span>
+                </div>
+            </div>
+            <!-- Action Buttons -->
+            <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                <div class="d-flex mb-3">
+                    <a class="btn btn-light btn-square me-3" href=""><i class="far fa-heart text-primary"></i></a>
+                    <a class="btn btn-primary" href="">Apply Now</a>
+                </div>
+                <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date Line: <?php echo $jobOffer['date']; ?></small>
+            </div>
+        </div>
+    </div>
+<?php endforeach; ?>
                 </div>
                 
             </div>
@@ -219,7 +270,18 @@ require_once 'C:/xampp/htdocs/dist/Controller/jobOfferC.php';
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
 
     <!-- Template Javascript -->
-    <script src="js/main.js"></script>
+    <script>
+window.embeddedChatbotConfig = {
+chatbotId: "JUaSFsWCzqTT2LlfqJclS",
+domain: "www.chatbase.co"
+}
+</script>
+<script
+src="https://www.chatbase.co/embed.min.js"
+chatbotId="JUaSFsWCzqTT2LlfqJclS"
+domain="www.chatbase.co"
+defer>
+</script>
 </body>
 
 </html>

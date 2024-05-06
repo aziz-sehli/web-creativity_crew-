@@ -252,7 +252,33 @@
     background-size: 5px 5px;
 }
 
+.search-bar {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    outline: none;
+    font-size: 16px;
+    transition: width 0.3s ease-in-out;
+}
 
+.search-bar:focus {
+    width: 400px;
+}
+
+.search-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.search-button:hover {
+    background-color: #0056b3;
+}
 /*** Category ***/
 .cat-item {
     display: block;

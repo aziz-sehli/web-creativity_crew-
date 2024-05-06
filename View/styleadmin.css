@@ -185,7 +185,7 @@ button:hover {
 }
 
 .sidebar .navbar .navbar-nav .nav-link:hover i,
-.sidebar .navbar .navbar-nav .nav-link.active i {
+.sidebar .navbar .navbar-nav .nav-link.active i { 
     background: var(--secondary);
 }
 
