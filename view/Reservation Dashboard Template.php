@@ -59,8 +59,53 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reservation Dashboard Template</title>
-    <!-- Lien vers votre fichier CSS -->
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333333;
+        }
+        .reservation-form {
+            margin-top: 30px;
+        }
+        label {
+            font-weight: bold;
+            color: #333333;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: #ffffff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -68,16 +113,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="reservation-form">
             <h2>Make a Reservation</h2>
             <form action='' method='POST'>
-                <label for='event_id'>event_id:</label>
-                <input type='text' id='event_id' name='event_id' required><br><br>
+                <label for='event_id'>Event ID:</label>
+                <input type='text' id='event_id' name='event_id' required><br>
                 <label for='participant_name'>Your Name:</label>
-                <input type='text' id='participant_name' name='participant_name' required><br><br>
+                <input type='text' id='participant_name' name='participant_name' required><br>
                 <label for='participant_email'>Your Email:</label>
-                <input type='email' id='participant_email' name='participant_email' required><br><br>
+                <input type='email' id='participant_email' name='participant_email' required><br>
                 <label for='participant_phone'>Your Phone:</label>
-                <input type='text' id='participant_phone' name='participant_phone' required><br><br>
+                <input type='text' id='participant_phone' name='participant_phone' required><br>
                 <label for='num_of_people'>Number of People:</label>
-                <input type='number' id='num_of_people' name='num_of_people' required><br><br>
+                <input type='number' id='num_of_people' name='num_of_people' required><br>
                 <input type='submit' value='Submit Reservation'>
             </form>
         </div>
