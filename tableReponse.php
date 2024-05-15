@@ -42,11 +42,17 @@ if(isset($_POST['ajout']))
                         Ajouter une nouvelle réclamation 
                     </button>
                 </a>
+                <a href="../View/index.php">
+                    <button type="ajout" name="actualiser" value="home" class="btn btn-primary">
+                        home
+                    </button>
+                </a>
             </div>
             <table id="myTable" class="table table-striped" >  
                 <thead>
                     <th><FONT COLOR="WHITE">ID</FONT></th>
                     <th><FONT COLOR="WHITE">Reponse</FONT></th>
+                    <th><FONT COLOR="WHITE">ID Reclamation</FONT></th>
                     <th><FONT COLOR="WHITE"></FONT></th>
                     <th><FONT COLOR="WHITE"></FONT></th>
                 </thead>
@@ -61,11 +67,14 @@ if(isset($_POST['ajout']))
                         <td class="align-img">
                             <FONT COLOR="WHITE"><?PHP echo $reponse['reponse']; ?></FONT>
                         </td>
+                        <td class="align-img">
+                            <FONT COLOR="WHITE"><?PHP echo $reponse['idd']; ?></FONT>
+                        </td>
                         <td>
                             <div class="form-group">
-                                <form method="POST" action="../View/deleterepAdmin.php">
+                                <form method="POST" action="deletereponse.php">
                                     <input type="submit" name="Supprimer" value="Supprimer" class="btn btn-primary">
-                                    <input type="hidden" value=<?PHP echo $reclamation['id']; ?> name="id">
+                                    <input type="hidden" value=<?PHP echo $reponse['id']; ?> name="id">
                                 </form>
                             </div>
                         </td>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générer PDF</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 24px;
+            color: #a8324e;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #3232a8;
+            color: #fff;
+        }
+        .logo {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .logo img {
+            max-width: 200px; /* Ajustez la taille de l'image selon vos besoins */
+        }
+    </style>
+</head>
+<body>
+    <h1>Générer un PDF pour un événement</h1>
+
+    <!-- Informations sur l'événement -->
+    <div>
+        <table>
+            <tr>
+                <th>ID de l'événement</th>
+                <td>{event_id}</td>
+            </tr>
+            <tr>
+                <th>Nom de l'événement</th>
+                <td>{event_name}</td>
+            </tr>
+            <tr>
+                <th>Date de l'événement</th>
+                <td>{event_date}</td>
+            </tr>
+            <tr>
+                <th>Description de l'événement</th>
+                <td>{event_description}</td>
+            </tr>
+            <tr>
+                <th>Lieu de l'événement</th>
+                <td>{event_location}</td>
+            </tr>
+            <tr>
+                <th>Organisateur de l'événement</th>
+                <td>{event_organizer}</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Logo -->
+    <div class="logo">
+        <div class="logo">
+            <img src="http://localhost/evvv/view/favicon.svg" alt="Logo de votre entreprise">
+        </div>
+    </div>
+</body>
+</html>
